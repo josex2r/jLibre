@@ -3,9 +3,19 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'j-libre',
+    podModulePrefix: 'j-libre/pods',
     environment: environment,
-    baseURL: '/',
-    locationType: 'auto',
+    //baseURL: '/',
+    locationType: 'hash',
+    exportApplicationGlobal: 'App',
+    contentSecurityPolicy: {
+      'default-src': '"none"',
+      'script-src': '"self"',
+      'font-src': '"self" fonts.gstatic.com',
+      'connect-src': '"self"',
+      'img-src': '"self" data:',
+      'media-src': '"self"'
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -29,7 +39,7 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
+    //ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter

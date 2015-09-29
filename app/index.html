@@ -9,6 +9,23 @@
 
     {{content-for 'head'}}
 
+    <script>
+        /* jshint browser: true */
+        (function (window) {
+            if (window && window.process && window.process.type) {
+                window.ELECTRON = true;
+            }
+
+            window.requireNode = window.require;
+            window.moduleNode = window.module;
+            window.processNode = window.process;
+
+            delete window.process;
+            delete window.require;
+            delete window.module;
+        })(this);
+    </script>
+
     <link rel="stylesheet" href="assets/vendor.css">
     <link rel="stylesheet" href="assets/j-libre.css">
 
@@ -19,6 +36,35 @@
 
     <script src="assets/vendor.js"></script>
     <script src="assets/j-libre.js"></script>
+
+    <script>
+        /* jshint browser: true */
+        (function (window) {
+            if (!window.ELECTRON) {
+                return;
+            }
+
+            // Restore Electron variables.
+            window.process = window.processNode;
+
+            // Redefine a global `require` function that can satisfy both
+            // Node and AMD module systems.
+            var requireAMD = window.require;
+            var requireNode = window.requireNode;
+
+            if (requireAMD) {
+                window.require = function () {
+                    try {
+                        return requireAMD.apply(null, arguments);
+                    } catch (e) {
+                        return requireNode.apply(null, arguments);
+                    }
+                };
+            } else {
+                window.require = requireNode;
+            }
+        })(this);
+    </script>
 
     {{content-for 'body-footer'}}
   </body>
