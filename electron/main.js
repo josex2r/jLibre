@@ -13,7 +13,7 @@ app.on('window-all-closed', function() {
   // En OS X es común que las aplicaciones y su barra de menú
   // se mantengan activas hasta que el usuario cierre la aplicación
   // explícitamente utilizando Cmd + Q
-  if (process.platform != 'darwin') {
+  if (process.platform !== 'darwin') {
     app.quit();
   }
 });
@@ -29,6 +29,8 @@ app.on('ready', function() {
 
   // Desplegar devtools.
   mainWindow.openDevTools();
+
+  var application = require('./app/application/index')(mainWindow);
 
   // Evento emitido cuando se cierra la ventana.
   mainWindow.on('closed', function() {

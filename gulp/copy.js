@@ -9,6 +9,6 @@ gulp.task('copy:package', function(){
 });
 
 gulp.task('copy:main', function(){
-    return gulp.src('electron/main.js')
+    return gulp.src('electron/**/*.js')
         .pipe(gulp.dest('dist'));
 });
