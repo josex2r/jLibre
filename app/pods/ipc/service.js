@@ -14,13 +14,13 @@ export default Ember.Service.extend({
     init: function(){
         this.get('ipc').on(this.get('responseName'), function(response){
             response = JSON.parse(response);
-            this.get('stack').forEach(function(promise){
-                if(promise.request.timestamp === response.timestamp &&
-                   promise.request.name === response.name){
+            this.get('stack').forEach(function(request){
+                if(request.timestamp === response.timestamp &&
+                   request.name === response.name){
                     if(response){
-                        promise.deferred.resolve(response);
+                        request.deferred.resolve(response);
                     }else{
-                        promise.deferred.reject();
+                        request.deferred.reject();
                     }
                 }
             });
@@ -28,6 +28,8 @@ export default Ember.Service.extend({
     },
 
     send: function(name, data, sync){
+        Ember.Logger.log('IPC | Sending request: ', request);
+        // Set request data
         var request = IpcModel.create({
             name: name,
             type: 'request',
@@ -35,54 +37,29 @@ export default Ember.Service.extend({
             sync: sync === true
         });
 
-        Ember.Logger.log('IPC | Sending request: ', request);
-        var reqType = this.get('ipc')[request.sync ? 'sendSync' : 'send'];
-        reqType(this.get('requestName'), JSON.stringify(request.serialize()));
-
-        var deferred = new Ember.RSVP.defer(),
-            promise = deferred.promise,
-            timeout = setTimeout(function(){
-                // Reject promise
-                deferred.reject('timeout');
-            }, request.get('timeout'));
-
-        // Set promise data
-        promise.request = request;
-        promise.deferred = deferred;
-
-        promise.then(function(response){
-            Ember.Logger.info('IPC | Response for ', promise.request, ' => ', response);
-        }).catch(function(error){
-            switch(error){
-                case 'timeout':
-                    Ember.Logger.error('IPC | Timeout for ', request);
-                    break;
-                default:
-                    Ember.Logger.error('IPC | Error for ', request);
-            }
-        }).finally(function(){
-            if(timeout){
-                clearTimeout(timeout);
-            }
+        // Remove request when ready
+        request.deferred.promise.finally(function(){
             // Remove from stack
-            this.get('stack').removeObject(promise);
+            this.get('stack').removeObject(request);
         }.bind(this));
 
-        if(!request.sync){
-            this.get('ipc').send(this.get('requestName'), JSON.stringify(request.serialize()));
+        // Serialize request data
+        var _requestData = JSON.stringify(request.serialize());
 
-            this.get('stack').addObject(promise);
+        if(!request.sync){
+            this.get('ipc').send(this.get('requestName'), _requestData);
+
+            this.get('stack').addObject(request);
         }else{
-            var response = this.get('ipc').sendSync(this.get('requestName'), JSON.stringify(request.serialize()));
+            var response = this.get('ipc').sendSync(this.get('requestName'), _requestData);
             if(response){
-                deferred.resolve(response);
+                request.deferred.resolve(response);
             }else{
-                deferred.reject();
+                request.deferred.reject();
             }
         }
 
-        return promise;
-
+        return request.deferred.promise;
     }
 
 });
