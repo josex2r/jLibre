@@ -32,10 +32,10 @@ export default Ember.Object.extend(SerializableModel, {
         }.bind(this)).catch(function(error){
             switch(error){
                 case 'timeout':
-                    Ember.Logger.error('IPC | Timeout for ', this.get('request'));
+                    Ember.Logger.error('IPC | Timeout for ', this);
                     break;
                 default:
-                    Ember.Logger.error('IPC | Error for ', this.get('request'));
+                    Ember.Logger.error('IPC | Error for ', this);
             }
         }.bind(this)).finally(function(){
             if(timeout){
