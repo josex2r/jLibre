@@ -1,8 +1,9 @@
-var app = require('app');  // Módulo para controlar el ciclo de vida de la aplicación.
-var BrowserWindow = require('browser-window');  // Módulo para crear uan ventana de navegador.
-
-// Reportar crashes a nuestro servidor.
-require('crash-reporter').start();
+import app from 'app'; // Módulo para controlar el ciclo de vida de la aplicación.
+import BrowserWindow from 'browser-window'; // Módulo para crear uan ventana de navegador.
+import crashReporter from 'crash-reporter'; // Reportar crashes a nuestro servidor.
+import ApplicationIndex from './app/application/index';
+//import Menu from 'menu';
+//import appMenu from './browser/menu/appMenu';
 
 // Mantener una referencia global al objeto window, si no lo haces, esta ventana
 // se cerrará automáticamente cuando el objeto JavaScript sea recolectado (garbage collected):
@@ -30,7 +31,9 @@ app.on('ready', function() {
   // Desplegar devtools.
   mainWindow.openDevTools();
 
-  var application = require('./app/application/index')(mainWindow);
+  //Menu.setApplicationMenu(appMenu);
+
+  new ApplicationIndex(mainWindow);
 
   // Evento emitido cuando se cierra la ventana.
   mainWindow.on('closed', function() {

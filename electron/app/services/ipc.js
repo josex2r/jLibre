@@ -1,6 +1,6 @@
-var ipc = require('ipc');
+import ipc from 'ipc';
 
-module.exports = {
+export default {
 
     requestName: 'ipcServiceRequest',
 
@@ -8,13 +8,13 @@ module.exports = {
 
     suscriptions: [],
 
-    init: function(){
+    init () {
         ipc.on(this.requestName, function(event, request) {
             request = JSON.parse(request);
             console.log('IPC | Received request: ', request);
             this.suscriptions.forEach(function(suscription){
                 if(request.name === suscription.name){
-                    var response = {
+                    let response = {
                         name: request.name,
                         type: 'response',
                         timestamp: request.timestamp,
@@ -31,7 +31,7 @@ module.exports = {
         }.bind(this));
     },
 
-    suscribe: function(name, cb){
+    suscribe (name, cb) {
         this.suscriptions.push({
             name: name,
             cb: cb
@@ -39,4 +39,4 @@ module.exports = {
         console.log('IPC | Suscribed to: ', name);
     }
 
-};
+}
