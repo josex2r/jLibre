@@ -10,7 +10,10 @@ gulp.task('copy:package', function(){
 });
 
 gulp.task('copy:main', function(){
-    return gulp.src('electron/**/*.js')
+    return gulp.src([
+            'electron/**/*.js',
+            'node_modules/babel-runtime/**'
+        ])
         .pipe(babel({
             blacklist: ['strict'],
             optional: ['runtime']

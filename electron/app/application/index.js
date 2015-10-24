@@ -1,7 +1,7 @@
 import ipcSrv from '../services/ipc';
 import workspaceSrv from '../services/workspace';
 import dialog from 'dialog';
-import sleep from 'sleep';
+import Q from 'Q';
 
 export default class ApplicationIndex {
 
@@ -12,7 +12,7 @@ export default class ApplicationIndex {
     }
 
     _suscribe () {
-        ipcSrv.suscribe('read-dir', function(/*request, response*/){
+        ipcSrv.suscribe('read-dir', function(request/*, response*/){
             let workspacePath = dialog.showOpenDialog({ properties: ['openDirectory'] });
             if(!workspacePath){
                 return [];
@@ -21,10 +21,14 @@ export default class ApplicationIndex {
             }
             let files = workspaceSrv.getEpubs(workspacePath);
             let metadata;
+            let deferred = Q.defer();
             workspaceSrv.readEpub(workspacePath, files[0]).then(function(data){
                 metadata = data;
+                deferred.resolve(metadata);
             });
-            return metadata;
+            return Q.all(files.map(function(epubPath){
+                return workspaceSrv.readEpub(workspacePath, epubPath);
+            }));
         });
     }
 

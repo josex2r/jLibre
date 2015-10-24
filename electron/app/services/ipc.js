@@ -1,4 +1,5 @@
 import ipc from 'ipc';
+import Q from 'Q';
 
 export default {
 
@@ -15,20 +16,33 @@ export default {
             this.suscriptions.forEach(function(suscription){
                 if(request.name === suscription.name){
                     let response = {
+                        sync: request.sync,
                         name: request.name,
                         type: 'response',
                         timestamp: request.timestamp,
                         data: suscription.cb(request, response)
                     };
-                    console.log('IPC | Sending response: ', response);
-                    if(!request.sync){
-                        event.sender.send(this.responseName, JSON.stringify(response));
+                    // Check if data is a promise
+                    if(response.data && typeof response.data.then === 'function'){
+                        response.data.then(function(data){
+                            response.data = data;
+                            this._dispatchResponse.call(this, event, response);
+                        }.bind(this));
                     }else{
-                        event.returnValue = JSON.stringify(response);
+                        this._dispatchResponse.call(this, event, response);
                     }
                 }
             }.bind(this));
         }.bind(this));
+    },
+
+    _dispatchResponse (event, response) {
+        console.log('IPC | Sending response: ', response);
+        if(!response.sync){
+            event.sender.send(this.responseName, JSON.stringify(response));
+        }else{
+            event.returnValue = JSON.stringify(response);
+        }
     },
 
     suscribe (name, cb) {

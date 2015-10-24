@@ -28,7 +28,6 @@ export default Ember.Service.extend({
     },
 
     send: function(name, data, sync){
-        Ember.Logger.log('IPC | Sending request: ', request);
         // Set request data
         var request = IpcModel.create({
             name: name,
@@ -36,7 +35,8 @@ export default Ember.Service.extend({
             data: data,
             sync: sync === true
         });
-
+        Ember.Logger.log('IPC | Sending request: ', request);
+        
         // Remove request when ready
         request.deferred.promise.finally(function(){
             // Remove from stack
