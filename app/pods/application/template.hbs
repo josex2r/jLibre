@@ -1,2 +1,17 @@
 Hey yo! {{#link-to 'test'}}{{#paper-button raised=true}}Click here!{{/paper-button}}{{/link-to}}
+
+<hr/>
+
+{{#each model as |epub|}}
+    <ul>
+        <li><b>Título</b>: {{epub.title}}</li>
+        <li><b>Descripción</b>: {{epub.description}}</li>
+        <li><b>Categoría</b>: {{epub.subject}}</li>
+        <li><b>Author</b>: {{epub.creator}}</li>
+        <li><b>Idioma</b>: {{epub.language}}</li>
+        <li><b>Fecha</b>: {{epub.date}}</li>
+    </ul>
+    <hr/>
+{{/each}}
+
 {{outlet}}
