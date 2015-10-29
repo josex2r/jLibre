@@ -4,6 +4,7 @@ Hey yo! {{#link-to 'test'}}{{#paper-button raised=true}}Click here!{{/paper-butt
 
 {{#each model as |epub|}}
     <ul>
+        <li><img src={{epub.cover}} width=50 /></li>
         <li><b>Título</b>: {{epub.title}}</li>
         <li><b>Descripción</b>: {{epub.description}}</li>
         <li><b>Categoría</b>: {{epub.subject}}</li>

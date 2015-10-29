@@ -20,15 +20,12 @@ export default class ApplicationIndex {
                 workspacePath = workspacePath[0];
             }
             let files = workspaceSrv.getEpubs(workspacePath);
-            let metadata;
-            let deferred = Q.defer();
-            workspaceSrv.readEpub(workspacePath, files[0]).then(function(data){
-                metadata = data;
-                deferred.resolve(metadata);
-            });
-            return Q.all(files.map(function(epubPath){
+            // Get metadata of each book
+            const metas = files.map(function(epubPath){
+                //Get book metadata
                 return workspaceSrv.readEpub(workspacePath, epubPath);
-            }));
+            });
+            return Q.all(metas);
         });
     }
 
