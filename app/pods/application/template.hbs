@@ -1,18 +1,57 @@
+<div class="container-fluid">
+    <!-- Sidebar -->
+    <div class="col-xs-2 sidebar">
+        <ul class="nav nav-sidebar">
+            <li class="active">
+                <a href="#">
+                    Start Bootstrap
+                </a>
+            </li>
+            <li>
+                <a href="#">Dashboard</a>
+            </li>
+            <li>
+                <a href="#">Shortcuts</a>
+            </li>
+            <li>
+                <a href="#">Overview</a>
+            </li>
+            <li>
+                <a href="#">Events</a>
+            </li>
+            <li>
+                <a href="#">About</a>
+            </li>
+            <li>
+                <a href="#">Services</a>
+            </li>
+            <li>
+                <a href="#">Contact</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="row">
+        <div class="col-xs-offset-2 col-xs-10">
+            <div class="row">
+                <div class="col-lg-6">
+                    {{#each model as |epub|}}
+                        <img height="64" width="64" src={{epub.cover}} />
+                        <h5 class="email-name">{{epub.title}} - <span>{{epub.creator}}</span></h5>
+                        <h4 class="email-subject">{{epub.subject}}</h4>
+                        <p class="email-desc">{{epub.description}}</p>
+                        <hr/>
+                    {{/each}}
+                </div>
+
+                <div class="col-lg-6">
+                    {{outlet}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 Hey yo! {{#link-to 'test'}}{{#paper-button raised=true}}Click here!{{/paper-button}}{{/link-to}}
-
-<hr/>
-
-{{#each model as |epub|}}
-    <ul>
-        <li><img src={{epub.cover}} width=50 /></li>
-        <li><b>Título</b>: {{epub.title}}</li>
-        <li><b>Descripción</b>: {{epub.description}}</li>
-        <li><b>Categoría</b>: {{epub.subject}}</li>
-        <li><b>Author</b>: {{epub.creator}}</li>
-        <li><b>Idioma</b>: {{epub.language}}</li>
-        <li><b>Fecha</b>: {{epub.date}}</li>
-    </ul>
-    <hr/>
-{{/each}}
-
-{{outlet}}
