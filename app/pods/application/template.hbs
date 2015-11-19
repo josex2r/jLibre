@@ -30,21 +30,29 @@
             </li>
         </ul>
     </div>
-    
+
     <div class="row">
         <div class="col-xs-offset-2 col-xs-10">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-xs-7">
                     {{#each model as |epub|}}
-                        <img height="64" width="64" src={{epub.cover}} />
-                        <h5 class="email-name">{{epub.title}} - <span>{{epub.creator}}</span></h5>
-                        <h4 class="email-subject">{{epub.subject}}</h4>
-                        <p class="email-desc">{{epub.description}}</p>
+                        <div class="row">
+                            <div class="col-xs-3 cover">
+                                <img class="img-responsive" src={{epub.cover}} />
+                            </div>
+                            <div class="col-xs-9">
+                                <div class="page-header">
+                                    <h1>{{epub.title}} <small>{{epub.creator}}</small></h1>
+                                </div>
+                                <h4 class="email-subject">{{epub.subject}}</h4>
+                                <p>{{truncate epub.description 300}}</p>
+                            </div>
+                        </div>
                         <hr/>
                     {{/each}}
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-xs-5">
                     {{outlet}}
                 </div>
             </div>

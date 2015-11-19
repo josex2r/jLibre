@@ -8,9 +8,9 @@ export default Ember.Route.extend({
         return this.get('ipc').send('read-dir').then(function(response){
             let promises = [];
             response.data.forEach(function(metadata, index){
+                // Get cover
                 let promise;
                 const lastPromise = promises[promises.length - 1];
-                // Get cover
                 if(lastPromise){
                     lastPromise.then(function(){
                         promise = this._getCover(metadata);

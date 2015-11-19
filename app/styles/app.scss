@@ -1,6 +1,6 @@
  @import 'ember-paper';
 
-.sidebar{
+.sidebar {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,4 +10,8 @@
     border-right: 1px solid #eee;
     color: white;
     text-align: left;
+}
+
+.cover {
+    padding-top: 40px;
 }
