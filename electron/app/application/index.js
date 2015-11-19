@@ -12,20 +12,30 @@ export default class ApplicationIndex {
     }
 
     _suscribe () {
+        this._readDirRequest();
+        this._getCoverRequest();
+    }
+
+    _readDirRequest () {
         ipcSrv.suscribe('read-dir', function(request/*, response*/){
-            let workspacePath = dialog.showOpenDialog({ properties: ['openDirectory'] });
+            const workspacePath = dialog.showOpenDialog({ properties: ['openDirectory'] });
             if(!workspacePath){
                 return [];
-            }else{
-                workspacePath = workspacePath[0];
             }
-            let files = workspaceSrv.getEpubs(workspacePath);
+            workspaceSrv.setWorkspace(workspacePath[0]);
+            const files = workspaceSrv.getEpubs();
             // Get metadata of each book
             const metas = files.map(function(epubPath){
                 //Get book metadata
                 return workspaceSrv.readEpub(workspacePath, epubPath);
             });
             return Q.all(metas);
+        });
+    }
+
+    _getCoverRequest () {
+        ipcSrv.suscribe('get-cover', function(request/*, response*/){
+            return workspaceSrv.getCover(request.data.title, request.data.author);
         });
     }
 

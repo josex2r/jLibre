@@ -20,6 +20,7 @@ export default {
                         name: request.name,
                         type: 'response',
                         timestamp: request.timestamp,
+                        uuid: request.uuid,
                         data: suscription.cb(request, response)
                     };
                     // Check if data is a promise

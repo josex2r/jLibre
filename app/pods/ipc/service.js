@@ -3,6 +3,8 @@ import IpcModel from './model';
 
 export default Ember.Service.extend({
 
+    security: Ember.inject.service('security'),
+
     ipc: require('ipc'),
 
     requestName: 'ipcServiceRequest',
@@ -16,6 +18,7 @@ export default Ember.Service.extend({
             response = JSON.parse(response);
             this.get('stack').forEach(function(request){
                 if(request.timestamp === response.timestamp &&
+                   request.uuid === response.uuid &&
                    request.name === response.name){
                     if(response){
                         request.deferred.resolve(response);
@@ -33,10 +36,11 @@ export default Ember.Service.extend({
             name: name,
             type: 'request',
             data: data,
-            sync: sync === true
+            sync: sync === true,
+            uuid: this.get('security').getToken()
         });
         Ember.Logger.log('IPC | Sending request: ', request);
-        
+
         // Remove request when ready
         request.deferred.promise.finally(function(){
             // Remove from stack

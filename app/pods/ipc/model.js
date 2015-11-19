@@ -2,7 +2,9 @@ import Ember from 'ember';
 import SerializableModel from '../../mixins/serializable-model';
 
 export default Ember.Object.extend(SerializableModel, {
-    propertyNames: 'type sync timestamp name timeout data'.w(),
+    propertyNames: 'type sync timestamp name timeout data uuid'.w(),
+
+    uuid: null,
 
     deferred: null,
 
