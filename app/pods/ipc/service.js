@@ -13,7 +13,7 @@ export default Ember.Service.extend({
 
     stack: [],
 
-    init: function(){
+    init () {
         this.get('ipc').on(this.get('responseName'), function(response){
             response = JSON.parse(response);
             this.get('stack').forEach(function(request){
@@ -30,7 +30,7 @@ export default Ember.Service.extend({
         }.bind(this));
     },
 
-    send: function(name, data, sync){
+    send (name, data, sync) {
         // Set request data
         var request = IpcModel.create({
             name: name,
@@ -47,23 +47,27 @@ export default Ember.Service.extend({
             this.get('stack').removeObject(request);
         }.bind(this));
 
+        this[request.sync ? '_sendSync' : '_sendAsync'](request);
+
+        return request.deferred.promise;
+    },
+
+    _sendAsync (request) {
         // Serialize request data
         var _requestData = JSON.stringify(request.serialize());
 
-        if(!request.sync){
-            this.get('ipc').send(this.get('requestName'), _requestData);
+        this.get('ipc').send(this.get('requestName'), _requestData);
 
-            this.get('stack').addObject(request);
-        }else{
-            var response = this.get('ipc').sendSync(this.get('requestName'), _requestData);
-            if(response){
-                request.deferred.resolve(response);
-            }else{
-                request.deferred.reject();
-            }
-        }
+        this.get('stack').addObject(request);
+    },
 
-        return request.deferred.promise;
+    _sendSync (request) {
+        // Serialize request data
+        var _requestData = JSON.stringify(request.serialize());
+
+        var response = this.get('ipc').sendSync(this.get('requestName'), _requestData);
+
+        request.deferred[response ? 'resolve' : 'reject'](response);
     }
 
 });

@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-xs-3 cover">
+        <img class="img-responsive" src={{data.cover}} />
+    </div>
+    <div class="col-xs-9">
+        <div class="page-header">
+            <h1>{{data.title}} <small>{{data.creator}}</small></h1>
+        </div>
+        <h4 class="email-subject">{{data.subject}}</h4>
+        <p>{{truncate data.description 300}}</p>
+    </div>
+</div>
+
+{{#if separator}}
+    <hr/>
+{{/if}}
