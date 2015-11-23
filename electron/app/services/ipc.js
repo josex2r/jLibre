@@ -12,7 +12,7 @@ export default {
     init () {
         ipc.on(this.requestName, function(event, request) {
             request = JSON.parse(request);
-            console.log('IPC | Received request: ', request);
+            //console.log('IPC | Received request: ', request);
             this.suscriptions.forEach(function(suscription){
                 if(request.name === suscription.name){
                     let response = {
@@ -38,7 +38,7 @@ export default {
     },
 
     _dispatchResponse (event, response) {
-        console.log('IPC | Sending response: ', response);
+        //console.log('IPC | Sending response: ', response);
         if(!response.sync){
             event.sender.send(this.responseName, JSON.stringify(response));
         }else{
@@ -51,7 +51,7 @@ export default {
             name: name,
             cb: cb
         });
-        console.log('IPC | Suscribed to: ', name);
+        //console.log('IPC | Suscribed to: ', name);
     }
 
 }
