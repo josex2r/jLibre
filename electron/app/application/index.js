@@ -3,6 +3,7 @@ import workspaceSrv from '../services/workspace';
 import epubSrv  from '../services/epub';
 import coverSrv  from '../services/cover';
 import metadataSrv  from '../services/metadata';
+import usbSrv  from '../services/usb';
 import Q from 'Q';
 
 export default class ApplicationIndex {
@@ -16,13 +17,13 @@ export default class ApplicationIndex {
     _suscribe () {
         this._readDirRequest();
         this._getCoverRequest();
+        this._getDevicesRequest();
+        this._transferRequest();
     }
 
     _readDirRequest () {
         ipcSrv.suscribe('read-dir', function(request/*, response*/){
             workspaceSrv.init();
-
-            metadataSrv.load();
 
             const files = epubSrv.getEpubs();
 
@@ -41,7 +42,24 @@ export default class ApplicationIndex {
 
     _getCoverRequest () {
         ipcSrv.suscribe('get-cover', function(request/*, response*/){
-            return coverSrv.getCover(request.data.title, request.data.author);
+            var covers = request.data.map(function(metadata){
+                return coverSrv.getCover(metadata.title, metadata.creator);
+            });
+
+            return Q.all(covers);
+        });
+    }
+
+    _getDevicesRequest () {
+        ipcSrv.suscribe('get-devices', function(request/*, response*/){
+            return usbSrv.find();
+        });
+    }
+
+    _transferRequest () {
+        ipcSrv.suscribe('transfer', function(request/*, response*/){
+            usbSrv.test(request.data);
+            return true;
         });
     }
 

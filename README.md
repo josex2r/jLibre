@@ -19,35 +19,19 @@ You will need the following things properly installed on your computer.
 * change into the new directory
 * `npm install`
 * `bower install`
+* `./node_modules/.bin/electron-rebuild`
 
 ## Running / Development
 
-* `ember server`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+* `npm run build`
 
-### Code Generators
+## Problems building "node-usb" in windows
 
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](http://emberjs.com/)
-* [ember-cli](http://www.ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
-
+Some C++ modules has to be rebuilded with the electron runtime.
+To solve this just download Microsoft Visual Studio Express 2013 and execute:
+* `npm install node-gyp -g`
+* `cd node_modules/usb/`
+* Open `binding.gyp` and add this vars:
+    * module_name = 'usb_bindings'
+    * module_path = './src/binding'
+* `HOME=~/.electron-gyp node-gyp rebuild --target=0.33.3 --arch=x64 --dist-url=https://atom.io/download/atom-shell --msvs_version=2013`

@@ -18,6 +18,7 @@ export default {
 
     setWorkspace (workspacePath) {
         this.workspacePath = workspacePath;
+        this.load();
     },
 
     findByFile (file) {
@@ -27,7 +28,7 @@ export default {
     },
 
     add (metadata) {
-        const found = this.findByFile(metadata);
+        const found = this.findByFile(metadata.file);
 
         if(!found){
             this.epubMetadata.push(metadata);
@@ -35,6 +36,15 @@ export default {
     },
 
     load () {
+        try {
+            const stat = fs.statSync(`${this.workspacePath}${this.file}`);
+            if(!stat || (stat && !stat.isFile())){
+                this.dump();
+            }
+        }catch (e) {
+            this.dump();
+        }
+
         const json = fs.readFileSync(`${this.workspacePath}${this.file}`, 'utf8');
 
         try {
@@ -50,13 +60,21 @@ export default {
         } catch (e) {
             this.epubMetadata = [];
         }
-        console.log(this.epubMetadata)
     },
 
-    dump (dir) {
+    dump () {
+        let deferred = Q.defer();
         const json = JSON.stringify(this.epubMetadata);
-        fs.writeFileSync(`${this.workspacePath}${this.file}`, json, 'utf8');
-        console.log(`${this.workspacePath}${this.file}`)
+
+        fs.writeFile(`${this.workspacePath}${this.file}`, json, 'utf8', function (err) {
+          if(err) {
+              deferred.reject(err);
+          }else{
+              deferred.resolve();
+          }
+        });
+
+        return deferred.promise;
     },
 
 }

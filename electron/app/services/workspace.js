@@ -1,18 +1,8 @@
-import fs from 'fs';
 import path from 'path';
-import EPub from 'epub';
-import Q from 'Q';
-import co from 'co';
-import request from 'request';
-import querystring from 'querystring';
-import mkdirp  from 'mkdirp';
 import dialog from 'dialog';
 import epubSrv  from './epub';
 import coverSrv  from './cover';
 import metadataSrv  from './metadata';
-
-let singleton = Symbol();
-let singletonEnforcer = Symbol();
 
 export default {
 

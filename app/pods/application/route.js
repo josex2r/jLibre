@@ -4,7 +4,13 @@ export default Ember.Route.extend({
 
     epub: Ember.inject.service('epub'),
 
+    devices: Ember.inject.service('devices'),
+
     model () {
-        return this.get('epub').find();
+        var promises = {
+            epubs: this.get('epub').find(),
+            devices: this.get('devices').find()
+        };
+        return Ember.RSVP.hash(promises);
     }
 });

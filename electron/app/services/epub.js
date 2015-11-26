@@ -2,10 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import EPub from 'epub';
 import Q from 'Q';
-import co from 'co';
-import request from 'request';
-import querystring from 'querystring';
-import mkdirp  from 'mkdirp';
 import metadataSrv  from './metadata';
 
 export default {

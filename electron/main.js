@@ -2,6 +2,7 @@ import app from 'app'; // Módulo para controlar el ciclo de vida de la aplicaci
 import BrowserWindow from 'browser-window'; // Módulo para crear uan ventana de navegador.
 import crashReporter from 'crash-reporter'; // Reportar crashes a nuestro servidor.
 import ApplicationIndex from './app/application/index';
+import usbDetect from 'usb-detection';
 //import Menu from 'menu';
 //import appMenu from './browser/menu/appMenu';
 
@@ -40,6 +41,9 @@ app.on('ready', function() {
     // Eliminar la referencia del objeto window.
     // En el caso de soportar multiples ventanas, es usual almacenar
     // los objetos window en un array, este es el momento en el que debes eliminar el elemento correspondiente.
+
+    usbDetect.stopMonitoring();
+
     mainWindow = null;
   });
 });
