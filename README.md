@@ -23,9 +23,13 @@ You will need the following things properly installed on your computer.
 
 ## Running / Development
 
+* Download [kindleguen](https://www.amazon.com/gp/feature.html?docId=1000765211) binaries & copy into:
+ * `electron/app/bin/kindlegen_win32.exe`
+ * `electron/app/bin/kindlegen_darwin`
+ * `electron/app/bin/kindlegen_linux`
 * `npm run build`
 
-## Problems building "node-usb" in windows
+## Problems building "C++" packages in windows
 
 Some C++ modules has to be rebuilded with the electron runtime.
 To solve this just download Microsoft Visual Studio Express 2013 and execute:

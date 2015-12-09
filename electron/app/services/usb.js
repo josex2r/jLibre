@@ -2,35 +2,48 @@ import fs from 'fs';
 import path from 'path';
 import usb from 'usb';
 import usbDetect from 'usb-detection';
+import drivelist from 'drivelist';
 import Q from 'Q';
 import metadataSrv  from './metadata';
 
 export default {
 
-    find : () => usbDetect.find(),
+    find () {
+        let deferred = Q.defer();
+
+        drivelist.list(function(error, disks) {
+            if (error){
+                deferred.reject(error);
+            }else{
+                disks = disks.filter((device) => !device.system);
+                deferred.resolve(disks);
+            }
+        });
+
+        return deferred.promise;
+    },
+
+    startMonitoring (onAdd, onRemove) {
+        if(typeof onAdd === 'function'){
+            usbDetect.on('add:vid:pid', onAdd);
+        }
+        if(typeof onRemove === 'function'){
+            usbDetect.on('remove:vid:pid', onRemove);
+        }
+    },
 
     stopMonitoring : () => usbDetect.stopMonitoring(),
 
     test (file) {
-        const metadata = metadataSrv.findByFile(file);
         console.log('--------------------------------------');
         console.log(usb.getDeviceList());
         console.log('--------------------------------------');
-
-        // Promise version of `find`:
-        usbDetect.find().then(function(devices) { console.log(devices); }).catch(function(err) { console.log(err); });
-
-        // Detect add/insert
-        usbDetect.on('add', function(device) { console.log('add', device); });
-        usbDetect.on('add:vid', function(device) { console.log('add', device); });
-        usbDetect.on('add:vid:pid', function(device) { console.log('add', device); });
-
-        // Detect remove
-        usbDetect.on('remove', function(device) { console.log('remove', device); });
-        usbDetect.on('remove:vid', function(device) { console.log('remove', device); });
-        usbDetect.on('remove:vid:pid', function(device) { console.log('remove', device); });
-
-        usbDetect.stopMonitoring();
+        drivelist.list(function(error, disks) {
+            console.log('--------------------------------------');
+            if (error) throw error;
+            console.log(disks);
+            console.log('--------------------------------------');
+        });
     }
 
 }
