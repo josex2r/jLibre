@@ -6,16 +6,16 @@ export default Ember.Service.extend({
 
     ipc: Ember.inject.service('ipc'),
 
-    find (){
+    find (sync){
         if(!this.get('devices').length){
-            return this.fetch();
+            return this.fetch(sync);
         }else{
             return new Ember.RSVP.Promise(resolve => resolve(this.get('devices')));
         }
     },
 
-    fetch (){
-        return this.get('ipc').send('get-devices').then(function(response){
+    fetch (sync){
+        return this.get('ipc').send('get-devices', undefined, sync).then(function(response){
             response.data = response.data || [];
             this.get('devices').pushObjects(response.data);
             return this.get('devices');

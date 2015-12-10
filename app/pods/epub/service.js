@@ -6,16 +6,16 @@ export default Ember.Service.extend({
 
     ipc: Ember.inject.service('ipc'),
 
-    find (){
+    find (sync){
         if(!this.get('epubs').length){
-            return this.fetch();
+            return this.fetch(sync);
         }else{
             return new Ember.RSVP.Promise(resolve => resolve(this.get('epubs')));
         }
     },
 
-    fetch (){
-        return this.get('ipc').send('read-dir').then(function(response){
+    fetch (sync){
+        return this.get('ipc').send('read-dir', undefined, sync).then(function(response){
             response.data = response.data || [];
 
             this._fetchCovers(response.data);

@@ -8,8 +8,8 @@ export default Ember.Route.extend({
 
     model () {
         var promises = {
-            epubs: this.get('epub').find(),
-            devices: this.get('devices').find()
+            epubs: this.get('epub').find(true),
+            devices: this.get('devices').find(true)
         };
         return Ember.RSVP.hash(promises);
     }
