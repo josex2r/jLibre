@@ -67,6 +67,8 @@ export default Ember.Service.extend({
 
         var response = this.get('ipc').sendSync(this.get('requestName'), _requestData);
 
+        response = JSON.parse(response);
+
         request.deferred[response ? 'resolve' : 'reject'](response);
     }
 
