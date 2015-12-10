@@ -49,7 +49,7 @@ export default {
     readEpub (dir, name) {
         let self = this;
         let deferred = Q.defer();
-        const file = `${dir}${path.sep}${name}`;
+        const file = `${dir}${name}`;
         const metadata = metadataSrv.findByFile(file);
 
         if (metadata) {

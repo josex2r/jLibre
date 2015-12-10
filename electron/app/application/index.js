@@ -3,6 +3,7 @@ import workspaceSrv from '../services/workspace';
 import epubSrv  from '../services/epub';
 import coverSrv  from '../services/cover';
 import metadataSrv  from '../services/metadata';
+import kindlegenSrv  from '../services/kindlegen';
 import usbSrv  from '../services/usb';
 import Q from 'Q';
 
@@ -58,8 +59,16 @@ export default class ApplicationIndex {
 
     _transferRequest () {
         ipcSrv.suscribe('transfer', function(request/*, response*/){
-            usbSrv.test(request.data);
-            return true;
+            const epubPath = request.data;
+            let mobiPath = kindlegenSrv.getMobiPath(epubPath);
+            try {
+                workspaceSrv.isFile(mobiPath);
+            }catch (e){
+                return kindlegenSrv.epubToMobi(epubPath).then(function(){
+                    return mobiPath;
+                });
+            }
+            return mobiPath;
         });
     }
 

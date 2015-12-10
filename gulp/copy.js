@@ -9,6 +9,11 @@ gulp.task('copy:package', function(){
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('copy:binaries', function(){
+    return gulp.src('electron/app/bin/**/*', { buffer: false})
+        .pipe(gulp.dest('dist/bin'));
+});
+
 gulp.task('copy:main', function(){
     return gulp.src([
             'electron/**/*.js',
