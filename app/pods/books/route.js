@@ -22,6 +22,10 @@ export default Ember.Route.extend(WorkspaceLoaded, {
     actions: {
         refresh () {
             return this.get('epub').find(true);
+        },
+
+        showDetail (index) {
+            this.replaceWith('books.detail', index);
         }
     }
 

@@ -1,8 +1,7 @@
 {{#paper-card}}
-    <div class="item-image" style="background-image: url('{{data.cover}}')">
-    </div>
+    <div class="item-image" style="background-image: url('{{data.cover}}')" {{action "showDetail"}}></div>
 
-    {{#paper-card-content}}
+    {{#paper-card-content action="showDetail"}}
         <h2>{{data.title}} <small>{{data.creator}}</small></h2>
         <p>{{truncate data.description 300}}</p>
     {{/paper-card-content}}
