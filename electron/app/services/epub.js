@@ -27,7 +27,7 @@ export default {
         if(depth){
             list.forEach(function(file) {
                 const fileName = `${dir}${file}`;
-                const fileDir = `${fileName}${path.sep}`;
+                const fileDir = `${fileName}/`;
                 if(this.isDirectory(fileDir)){
                     results = results.concat(
                         this._getFilesRecursively(fileDir, depth - 1)

@@ -6,8 +6,6 @@ export default Ember.Component.extend({
 
     data: null,
 
-    separator: true,
-
     actions: {
 
         transfer () {

@@ -1,14 +1,12 @@
 import Ember from 'ember';
+import WorkspaceLoaded from 'j-libre/mixins/workspace-loaded';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(WorkspaceLoaded, {
 
-    epub: Ember.inject.service('epub'),
-
-    devices: Ember.inject.service('devices'),
+    devices: Ember.inject.service(),
 
     model () {
         var promises = {
-            epubs: this.get('epub').find(true),
             devices: this.get('devices').find(true)
         };
         return Ember.RSVP.hash(promises);

@@ -20,11 +20,16 @@ export default class ApplicationIndex {
         this._getCoverRequest();
         this._getDevicesRequest();
         this._transferRequest();
+        this._selectWorkspace();
     }
 
     _readDirRequest () {
         ipcSrv.suscribe('read-dir', function(request/*, response*/){
-            workspaceSrv.init();
+            if(request.data){
+                workspaceSrv.setWorkspace(request.data);
+            }else{
+                workspaceSrv.init();
+            }
 
             const files = epubSrv.getEpubs();
 
@@ -69,6 +74,12 @@ export default class ApplicationIndex {
                 });
             }
             return mobiPath;
+        });
+    }
+
+    _selectWorkspace () {
+        ipcSrv.suscribe('select-workspace', function(request/*, response*/){
+            return workspaceSrv.init();
         });
     }
 

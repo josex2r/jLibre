@@ -12,13 +12,15 @@ export default {
     init () {
         const workspacePath = dialog.showOpenDialog({ properties: ['openDirectory'] });
         if(!workspacePath){
-            throw 'Cannot init workspace';
+            return;
+        }else{
+            this.setWorkspace(workspacePath[0]);
+            return this.workspacePath;
         }
-        this.setWorkspace(workspacePath[0]);
     },
 
     setWorkspace (dir) {
-        this.workspacePath = `${dir}${path.sep}`;
+        this.workspacePath = this.normalize(`${dir}`);
         epubSrv.setWorkspace(this.workspacePath);
         coverSrv.setWorkspace(this.workspacePath);
         metadataSrv.setWorkspace(this.workspacePath);

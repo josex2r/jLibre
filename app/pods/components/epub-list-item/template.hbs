@@ -1,17 +1,13 @@
-<div class="row">
-    <div class="col-xs-3 cover">
-        <img class="img-responsive" src={{data.cover}} />
+{{#paper-card}}
+    <div class="item-image" style="background-image: url('{{data.cover}}')">
     </div>
-    <div class="col-xs-9">
-        <div class="page-header">
-            <h1>{{data.title}} <small>{{data.creator}}</small></h1>
-        </div>
-        <h4 class="email-subject">{{data.subject}}</h4>
-        <p>{{truncate data.description 300}}</p>
-        {{#paper-button raised=true action="transfer"}}Transfer to usb{{/paper-button}}
-    </div>
-</div>
 
-{{#if separator}}
-    <hr/>
-{{/if}}
+    {{#paper-card-content}}
+        <h2>{{data.title}} <small>{{data.creator}}</small></h2>
+        <p>{{truncate data.description 300}}</p>
+    {{/paper-card-content}}
+
+    <div class="md-actions" layout="row" layout-align="end center">
+        {{#paper-button action="transfer"}}Transfer to usb{{/paper-button}}
+    </div>
+{{/paper-card}}

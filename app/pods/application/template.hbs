@@ -2,25 +2,29 @@
     {{application-menu}}
 
     <div class="row">
-        <div class="col-xs-offset-2 col-xs-10 no-padding">
+        <div class="col-xs-offset-4 col-sm-offset-3 col-md-offset-2 col-xs-8 col-sm-9 col-md-10 no-padding">
             {{application-navbar devices=decicesNames}}
 
-            <div class="row padding">
-                <div class="col-xs-12 col-md-7">
-                    {{#each model.epubs as |epub|}}
-                        {{epub-list-item data=epub}}
-                    {{/each}}
-                </div>
+            {{#if veil.visible}}
+                {{application-veil}}
+            {{/if}}
 
-                <div class="col-xs-12 col-md-5">
-                    {{outlet}}
-                </div>
-            </div>
+            <section class="row padding">
+                {{#unless settings.workspace}}
+                    <div class="icon-container-big no-workspace" {{action 'selectWorkspace'}}>
+                        <span class="glyphicon glyphicon-inbox"></span>
+                    </div>
+
+                    <h1 class="text-center" {{action 'selectWorkspace'}}>Abrir biblioteca</h1>
+
+                    <blockquote class="blockquote-reverse">
+                        <p>{{quote.text}}</p>
+                        <footer>{{quote.author}}</footer>
+                    </blockquote>
+                {{/unless}}
+
+                {{outlet}}
+            </section>
         </div>
     </div>
 </div>
-
-
-
-
-Hey yo! {{#link-to 'test'}}{{#paper-button raised=true}}Click here!{{/paper-button}}{{/link-to}}

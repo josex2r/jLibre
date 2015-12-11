@@ -1,0 +1,9 @@
+<div class="col-xs-12 col-md-7">
+    {{#each model as |epub|}}
+        {{epub-list-item data=epub}}
+    {{/each}}
+</div>
+
+<div class="col-xs-12 col-md-5">
+    {{outlet}}
+</div>

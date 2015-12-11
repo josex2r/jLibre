@@ -11,28 +11,26 @@ export default {
 
     coversPath: '',
 
+    coversExt: 'jpg',
+
     setWorkspace (workspacePath) {
         this.workspacePath = workspacePath;
-        this.coversPath = `${this.workspacePath}.covers${path.sep}`;
+        this.coversPath = `${this.workspacePath}.jLibre/`;
         mkdirp(this.coversPath);
     },
 
     getCoverName (title, author) {
-        return querystring.stringify({
-            q: `${title} ${author}`
-        }).replace(/q=/, '');
+        return `${title}_${author}`.replace(/[^a-z0-9]/gi, '_');
     },
 
     getCover (title, author) {
         const coverName = this.getCoverName(title, author);
-        const imagePath = `${this.coversPath}${coverName}`;
+        const imagePath = `${this.coversPath}${coverName}.${this.coversExt}`;
         let deferred = Q.defer();
 
         if(fs.existsSync(imagePath)){
             // Get file from dir
-            const contents = fs.readFileSync(imagePath);
-            const base64Image = new Buffer(contents, 'binary').toString('base64');
-            deferred.resolve(`data:image/png;base64,${base64Image}`);
+            deferred.resolve(imagePath);
         }else{
             // Get file from googleapis
             this.searchCover(title, author).then(function(data){

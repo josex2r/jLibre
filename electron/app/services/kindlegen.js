@@ -13,7 +13,7 @@ export default {
         const platform = os.platform();
         const ext = platform === 'win32' ? '.exe' : '';
         const dir = path.resolve(__dirname, '../', this.binPath) +
-            `${path.sep}kindlegen_${platform}${ext}`;
+            `/kindlegen_${platform}${ext}`;
         return workspaceSrv.normalize(dir);
     },
 
@@ -22,7 +22,7 @@ export default {
         if(stat && stat.isFile()){
             const ext = path.extname(epubPath);
             const fileName = path.basename(epubPath, ext);
-            const dir = `${path.dirname(epubPath)}${path.sep}${fileName}.mobi`;
+            const dir = `${path.dirname(epubPath)}/${fileName}.mobi`;
             return workspaceSrv.normalize(dir);
         }
         return undefined;
