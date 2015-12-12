@@ -8,6 +8,11 @@ export default Ember.Component.extend({
 
     data: null,
 
+    style: Ember.computed('data.cover', function() {
+        var cover = this.get('data.cover');
+        return new Ember.Handlebars.SafeString(`background-image: url('${cover}')`);
+    }),
+
     actions: {
 
         transfer () {

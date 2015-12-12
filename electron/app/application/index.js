@@ -17,7 +17,6 @@ export default class ApplicationIndex {
 
     _suscribe () {
         this._readDirRequest();
-        this._getCoverRequest();
         this._getDevicesRequest();
         this._transferRequest();
         this._selectWorkspace();
@@ -39,20 +38,12 @@ export default class ApplicationIndex {
                 return epubSrv.readEpub(workspaceSrv.workspacePath, epubPath);
             });
 
-            return Q.all(metas).then(function(data){
+            return Q.allSettled(metas).then(function(data){
+                data = data.filter(item => item.state !== 'rejected');
+                data = data.map(item => item.value);
                 metadataSrv.dump();
                 return data;
             });
-        });
-    }
-
-    _getCoverRequest () {
-        ipcSrv.suscribe('get-cover', function(request/*, response*/){
-            var covers = request.data.map(function(metadata){
-                return coverSrv.getCover(metadata.title, metadata.creator);
-            });
-
-            return Q.all(covers);
         });
     }
 

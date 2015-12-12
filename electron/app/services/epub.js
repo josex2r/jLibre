@@ -3,6 +3,12 @@ import path from 'path';
 import EPub from 'epub';
 import Q from 'Q';
 import metadataSrv  from './metadata';
+import coverSrv  from './cover';
+import epubs from '../epubs/formats';
+
+var formats = epubs.map(function(format){
+    return format.type;
+});
 
 export default {
 
@@ -42,7 +48,8 @@ export default {
 
     getEpubs (depth = 5) {
         return this._getFilesRecursively('', depth).filter(function(name){
-            return name.match(/\.epub$/);
+            name = name.toLowerCase();
+            return formats.some(ext => name.match(new RegExp(ext, 'gi')));
         });
     },
 
@@ -57,9 +64,33 @@ export default {
         } else {
             let epub = new EPub(file, 'Images', 'Text');
             epub.on('end', function(){
+                // Set metadata
+                const cover = epub.metadata.cover;
+                epub.metadata.coverPath = epub.manifest[cover].href;
+                epub.metadata.author = epub.metadata.creator;
                 epub.metadata.file = file;
-                metadataSrv.add(epub.metadata);
-                deferred.resolve(epub.metadata);
+                epub.metadata.toc = epub.toc;
+                // Check if cover exist
+                const coverPath = coverSrv.getCover(epub.metadata.title, epub.metadata.creator);
+                if(coverPath){
+                    metadataSrv.add(epub.metadata);
+                    epub.metadata.cover = coverPath;
+                    deferred.resolve(epub.metadata);
+                }else{
+                    // Read cover from the EPUB file
+                    epub.getImage(epub.metadata.cover, function(err, img, mimeType){
+                        if(err){
+                            deferred.resolve(epub.metadata);
+                        }else{
+                            coverSrv.saveCover(epub.metadata.title, epub.metadata.creator, img).then(function(path){
+                                epub.metadata.cover = path;
+                                metadataSrv.add(epub.metadata);
+                            }).finally(function(){
+                                deferred.resolve(epub.metadata);
+                            });
+                        }
+                    });
+                }
             });
             epub.parse();
         }
