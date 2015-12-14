@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import IpcModel from './model';
+import IpcModel from 'j-libre/pods/ipc/model';
 
 export default Ember.Service.extend({
 

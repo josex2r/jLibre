@@ -1,7 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import {exec, execFile} from 'child_process';
+import {exec} from 'child_process';
 import Q from 'Q';
 import workspaceSrv from '../services/workspace';
 
@@ -18,8 +18,7 @@ export default {
     },
 
     getMobiPath (epubPath) {
-        const stat = fs.statSync(epubPath);
-        if(stat && stat.isFile()){
+        if(workspaceSrv.isFile(epubPath)){
             const ext = path.extname(epubPath);
             const fileName = path.basename(epubPath, ext);
             const dir = `${path.dirname(epubPath)}/${fileName}.mobi`;

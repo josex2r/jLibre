@@ -6,18 +6,20 @@ import co from 'co';
 import request from 'request';
 import querystring from 'querystring';
 import mkdirp  from 'mkdirp';
+import workspaceSrv  from './workspace';
 import epubSrv  from './epub';
 
 export default {
 
     workspacePath: '',
 
-    file: '.metadata',
+    file: '.jlibre/.metadata',
 
     epubMetadata: [],
 
     setWorkspace (workspacePath) {
         this.workspacePath = workspacePath;
+        this.epubMetadata = [];
         this.load();
     },
 
@@ -36,12 +38,7 @@ export default {
     },
 
     load () {
-        try {
-            const stat = fs.statSync(`${this.workspacePath}${this.file}`);
-            if(!stat || (stat && !stat.isFile())){
-                this.dump();
-            }
-        }catch (e) {
+        if(!workspaceSrv.isFile(`${this.workspacePath}${this.file}`)){
             this.dump();
         }
 

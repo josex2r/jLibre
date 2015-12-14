@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import EPub from 'epub';
 import Q from 'Q';
+import workspaceSrv  from './workspace';
 import metadataSrv  from './metadata';
 import coverSrv  from './cover';
 import epubs from '../epubs/formats';
@@ -22,19 +23,15 @@ export default {
         return fs.readdirSync(`${this.workspacePath}${dir}`) || [];
     },
 
-    isDirectory (dir) {
-        const stat = fs.statSync(`${this.workspacePath}${dir}`);
-        return stat && stat.isDirectory();
-    },
-
     _getFilesRecursively (dir, depth) {
+        console.log(arguments)
         let results = [];
         let list = this.getFiles(dir);
         if(depth){
             list.forEach(function(file) {
                 const fileName = `${dir}${file}`;
                 const fileDir = `${fileName}/`;
-                if(this.isDirectory(fileDir)){
+                if(workspaceSrv.isDirectory(`${this.workspacePath}${fileDir}`)){
                     results = results.concat(
                         this._getFilesRecursively(fileDir, depth - 1)
                     );

@@ -27,12 +27,30 @@ export default {
     },
 
     normalize (dir) {
-        return dir.replace(/\\/g, '/'); //.replace(/([ ])/g, '\\$1');
+        dir = dir.replace(/\\/g, '/'); //.replace(/([ ])/g, '\\$1');
+        if(dir[dir.length - 1] !== '/'){
+            dir = `${dir}/`;
+        }
+        console.log(dir)
+        return dir;
     },
 
     isFile (dir) {
-        const stat = fs.statSync(dir);
-        return stat && stat.isFile();
-    }
+        try{
+            const stat = fs.statSync(dir);
+            return stat && stat.isFile();
+        } catch (e) {
+            return false;
+        }
+    },
+
+    isDirectory (dir) {
+        try{
+            const stat = fs.statSync(dir);
+            return stat && stat.isDirectory();
+        } catch (e) {
+            return false;
+        }
+    },
 
 }

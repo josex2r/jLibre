@@ -5,14 +5,14 @@ export default Ember.Route.extend(WorkspaceLoaded, {
 
     veil: Ember.inject.service(),
 
-    epub: Ember.inject.service(),
+    books: Ember.inject.service(),
 
     beforeModel () {
         this.get('veil').show();
     },
 
     model () {
-        return this.get('epub').find();
+        return this.get('books').find();
     },
 
     afterModel () {
@@ -21,7 +21,7 @@ export default Ember.Route.extend(WorkspaceLoaded, {
 
     actions: {
         refresh () {
-            return this.get('epub').find(true);
+            return this.get('books').find(true);
         },
 
         showDetail (index) {

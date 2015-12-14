@@ -6,10 +6,11 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-    this.route('test');
-    this.route('books', function() {
-        this.route('detail', {path: "/:index"});
-    });
+  this.route('test');
+  this.route('books', function() {
+      this.route('detail', {path: "/:index"});
+  });
+  this.route('workspaces');
 });
 
 export default Router;
