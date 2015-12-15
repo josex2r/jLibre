@@ -1,1 +1,9 @@
+<div class="content col-xs-12">
+    {{#each model as |workspace index|}}
+        {{path-to-breadcrumb data=workspace.path}}
+
+        {{slick-carousel data=workspace.covers}}
+    {{/each}}
+</div>
+
 {{outlet}}

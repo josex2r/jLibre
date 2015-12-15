@@ -19,6 +19,10 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  app.import('bower_components/slick-carousel/slick/slick.css');
+  //app.import('bower_components/slick-carousel/slick/slick-theme.css');
+  app.import('bower_components/slick-carousel/slick/slick.js');
+
   app.import('bower_components/bootstrap/dist/css/bootstrap.css');
   app.import('bower_components/bootstrap/dist/js/bootstrap.js');
   app.import('bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff2', { destDir: 'fonts' });

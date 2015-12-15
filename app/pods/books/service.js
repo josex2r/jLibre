@@ -3,7 +3,7 @@ import settingsStorage from 'j-libre/pods/settings/model';
 
 export default Ember.Service.extend({
 
-    books: [],
+    content: [],
 
     ipc: Ember.inject.service(),
 
@@ -12,14 +12,14 @@ export default Ember.Service.extend({
     settings: settingsStorage,
 
     workspaceClean: Ember.observer('settings.workspace', function(){
-        this.get('books').clear();
+        this.get('content').clear();
     }),
 
     find (sync){
-        if(!this.get('books').length){
+        if(!this.get('content').length){
             return this.fetch(sync);
         }else{
-            return new Ember.RSVP.Promise(resolve => resolve(this.get('books')));
+            return new Ember.RSVP.Promise(resolve => resolve(this.get('content')));
         }
     },
 
@@ -29,7 +29,7 @@ export default Ember.Service.extend({
         return this.get('ipc').send('read-dir', workspace, sync).then(function(response){
             response.data = response.data || [];
 
-            this.get('books').pushObjects(response.data);
+            this.get('content').pushObjects(response.data);
 
             var filteredMeta = response.data.map(function(meta){
                 return {
@@ -40,7 +40,7 @@ export default Ember.Service.extend({
             });
             this.get('workspaces').add(workspace, {books: filteredMeta});
 
-            return this.get('books');
+            return this.get('content');
         }.bind(this));
     }
 

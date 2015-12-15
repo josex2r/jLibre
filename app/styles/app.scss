@@ -4,6 +4,10 @@ body > div, body > div .container-fluid, .container-fluid > .row, .container-flu
     height: 100%;
 }
 
+#paper-wormhole {
+    display: none;
+}
+
 .container-fluid {
     margin-right: 0;
     padding-right: 0;
@@ -37,6 +41,10 @@ nav {
 section {
     height: calc(100% - 50px);
     margin-top: 50px;
+}
+
+section > div.content {
+    padding-top: 10px;
 }
 
 .veil {

@@ -16,8 +16,6 @@ export default Ember.Mixin.create({
 
         if(!this.get('settings.workspace')){
             return this.replaceWith('application');
-        }else{
-            return this.replaceWith('books');
         }
     }
 });

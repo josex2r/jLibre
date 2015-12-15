@@ -17,6 +17,7 @@
     "bootstrap": "~3.3.5",
     "ember-addons.bs_for_ember": "~0.7.0",
     "ember-addons.bootstrap_for_ember": "ember-addons.bs_for_ember#~0.7.0",
-    "blob-polyfill": "~1.0.20150320"
+    "blob-polyfill": "~1.0.20150320",
+    "slick-carousel": "~1.5.9"
   }
 }

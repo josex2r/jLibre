@@ -10,6 +10,8 @@ export default Ember.Service.extend({
 
     settings: settingsStorage,
 
+    content: Ember.computed.alias('workspaces._content'),
+
     add (path, meta) {
         var workspace = this.get('workspaces').findBy('path', path);
         if(!workspace){
@@ -17,7 +19,7 @@ export default Ember.Service.extend({
             var data = {path, meta};
             this.get('workspaces').addObject(data);
         }else{
-            workspace.meta = Ember.merge(workspace.meta, meta);
+            Ember.set(workspace, 'meta', meta);
         }
         this.get('workspaces').save();
     },
