@@ -13,11 +13,8 @@ export default Ember.Route.extend(NavbarItems, WorkspaceLoaded, {
 
     books: Ember.inject.service(),
 
-    beforeModel () {
-        this.get('veil').show();
-    },
-
     model () {
+        this.get('veil').show();
         return this.get('books').find();
     },
 

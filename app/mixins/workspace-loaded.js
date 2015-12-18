@@ -12,10 +12,10 @@ export default Ember.Mixin.create({
     }),
 
     beforeModel: function() {
-        this._super.apply(this, arguments);
-
         if(!this.get('settings.workspace')){
             return this.replaceWith('application');
+        }else{
+            this._super.apply(this, arguments);
         }
     }
 });
