@@ -6,9 +6,11 @@ export default Ember.Route.extend({
 
     model () {
         return this.get('workspaces.content').map(function(workspace){
+            const booksMeta = workspace.meta.books || [];
+            
             return {
                 path: workspace.path,
-                covers: workspace.meta.books.mapBy('cover')
+                covers: booksMeta.mapBy('cover')
             }
         });
     }

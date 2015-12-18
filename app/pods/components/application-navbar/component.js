@@ -6,10 +6,16 @@ export default Ember.Component.extend({
 
     tagName: 'nav',
 
-    classNames: ['navbar', 'navbar-default', 'navbar-static-top', 'fixed'],
+    classNames: ['col-xs-8', 'col-sm-9', 'col-md-10', 'navbar', 'navbar-default', 'navbar-static-top', 'fixed'],
 
     devices: [],
 
-    selected: null
+    selected: null,
+
+    actions: {
+        selectWorkspace () {
+            this.sendAction('selectWorkspace');
+        }
+    }
 
 });

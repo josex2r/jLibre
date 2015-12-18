@@ -15,7 +15,7 @@ export default Ember.Service.extend({
     add (path, meta) {
         var workspace = this.get('workspaces').findBy('path', path);
         if(!workspace){
-            meta = meta || {};
+            meta = meta || {books: []};
             var data = {path, meta};
             this.get('workspaces').addObject(data);
         }else{

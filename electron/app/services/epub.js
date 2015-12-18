@@ -24,7 +24,6 @@ export default {
     },
 
     _getFilesRecursively (dir, depth) {
-        console.log(arguments)
         let results = [];
         let list = this.getFiles(dir);
         if(depth){
@@ -89,6 +88,11 @@ export default {
                     });
                 }
             });
+
+            epub.on('error', function(err){
+                deferred.reject(err);
+            });
+
             epub.parse();
         }
 

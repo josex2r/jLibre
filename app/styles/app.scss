@@ -1,5 +1,9 @@
  @import 'ember-paper';
 
+$dark-color: #1f1f1f !default;
+$light-color: #ffffff !default;
+$opacity-hover: 0.7;
+
 body > div, body > div .container-fluid, .container-fluid > .row, .container-fluid > .row > div {
     height: 100%;
 }
@@ -23,7 +27,7 @@ menu {
     height: 100%;
     margin-top: 0;
     padding: 20px;
-    background-color: #2f2f2f;
+    background-color: $dark-color;
     border-right: 1px solid #eee;
     color: white;
     text-align: left;
@@ -38,6 +42,19 @@ nav {
     margin-left: 5px;
 }
 
+nav > div > span.glyphicon {
+    cursor: pointer;
+    font-size: 25px;
+    margin-top: 13px;
+    color: $dark-color;
+}
+nav > div > span.glyphicon:hover {
+    opacity: $opacity-hover;
+}
+nav > div > span.glyphicon:last-child{
+    margin-right: 5px;
+}
+
 section {
     height: calc(100% - 50px);
     margin-top: 50px;
@@ -45,6 +62,7 @@ section {
 
 section > div.content {
     padding-top: 10px;
+    padding-right: 0px;
 }
 
 .veil {
@@ -75,7 +93,8 @@ section > div.content {
 }
 
 .icon-container-big {
-    background-color: #2f2f2f;
+    cursor: pointer;
+    background-color: $dark-color;
     border-radius: 50%;
     width: 15em;
     height: 15em;
@@ -108,4 +127,89 @@ blockquote {
 
 .spin {
     -webkit-animation: spin 2s infinite linear;
+}
+
+ol.breadcrumb:not(:first-child) {
+    margin-top: 25px;
+}
+
+/*
+ * Slick arrows
+ */
+$slick-opacity-default: 0.75 !default;
+$slick-opacity-on-hover: 1 !default;
+$slick-opacity-not-active: 0.25 !default;
+$slick-prev-character: "\e079" !default;
+$slick-next-character: "\e080" !default;
+
+.slick {
+    width: 100%;
+}
+
+.slick-prev,
+.slick-next {
+    position: absolute;
+    display: block;
+    height: 20px;
+    width: 20px;
+    line-height: 0px;
+    font-size: 0px;
+    cursor: pointer;
+    background: transparent;
+    color: transparent;
+    top: 50%;
+    margin-top: -10px\9; /*lte IE 8*/
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    padding: 0;
+    border: none;
+    outline: none;
+    &:hover, &:focus {
+        color: black;
+    }
+}
+
+.slick-prev:before, .slick-next:before {
+    font-family: 'Glyphicons Halflings';
+    font-size: 20px;
+    line-height: 1;
+    color: $dark-color;
+    opacity: $slick-opacity-default;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-prev {
+    left: -5px;
+    z-index: 1;
+    background: linear-gradient(to right, rgba(255,255,255,1) 50%, rgba(0,0,0,0) 100%);
+    height: 100%;
+    [dir="rtl"] & {
+        left: auto;
+        right: -5px;
+    }
+    &:before {
+        content: $slick-prev-character;
+        [dir="rtl"] & {
+            content: $slick-next-character;
+        }
+    }
+}
+
+.slick-next {
+    right: -5px;
+    z-index: 1;
+    background: linear-gradient(to left, rgba(255,255,255,1) 50%, rgba(0,0,0,0) 100%);
+    height: 100%;
+    [dir="rtl"] & {
+        left: -5px;
+        right: auto;
+    }
+    &:before {
+        content: $slick-next-character;
+        [dir="rtl"] & {
+            content: $slick-prev-character;
+        }
+    }
 }
