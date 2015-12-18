@@ -4,6 +4,7 @@ export default StorageObject.create({
     storageKey: 'settings',
 
     initialContent: {
-        workspace: null
+        workspace: null,
+        navbarItems: ['workspace']
     }
 });

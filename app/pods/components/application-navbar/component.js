@@ -1,8 +1,11 @@
 import Ember from 'ember';
+import settingsStorage from 'j-libre/pods/settings/model';
 
 export default Ember.Component.extend({
 
     veil: Ember.inject.service(),
+
+    settings: settingsStorage,
 
     tagName: 'nav',
 
@@ -11,6 +14,8 @@ export default Ember.Component.extend({
     devices: [],
 
     selected: null,
+
+    navbarItems: Ember.computed.alias('settings.navbarItems'),
 
     actions: {
         selectWorkspace () {

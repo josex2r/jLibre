@@ -1,7 +1,13 @@
 import Ember from 'ember';
+import NavbarItems from 'j-libre/mixins/navbar-items';
 import WorkspaceLoaded from 'j-libre/mixins/workspace-loaded';
 
-export default Ember.Route.extend(WorkspaceLoaded, {
+export default Ember.Route.extend(NavbarItems, WorkspaceLoaded, {
+
+    navbarItems: [
+        'search',
+        'workspace'
+    ],
 
     veil: Ember.inject.service(),
 
@@ -17,6 +23,7 @@ export default Ember.Route.extend(WorkspaceLoaded, {
 
     afterModel () {
         this.get('veil').hide();
+        this._super(this, arguments);
     },
 
     actions: {
