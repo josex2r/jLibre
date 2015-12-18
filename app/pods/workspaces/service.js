@@ -35,7 +35,7 @@ export default Ember.Service.extend({
     },
 
     selectWorkspace (){
-        return this.get('ipc').send('select-workspace', undefined, true).then(function(response){
+        return this.get('ipc').send('select-workspace', {sync: true}).then(function(response){
             if(response.data){
                 this.set('settings.workspace', response.data);
                 this.get('settings').save();

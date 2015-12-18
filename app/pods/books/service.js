@@ -26,7 +26,11 @@ export default Ember.Service.extend({
     fetch (sync){
         var workspace = this.get('settings.workspace');
 
-        return this.get('ipc').send('read-dir', workspace, sync).then(function(response){
+        return this.get('ipc').send('read-dir', {
+            data: workspace,
+            sync: sync,
+            timeout: null
+        }).then(function(response){
             response.data = response.data || [];
 
             this.get('content').pushObjects(response.data);

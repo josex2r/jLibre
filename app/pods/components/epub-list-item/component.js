@@ -16,7 +16,10 @@ export default Ember.Component.extend({
     actions: {
 
         transfer () {
-            this.get('ipc').send('transfer', this.get('data.file'), true);
+            this.get('ipc').send('transfer', {
+                data: this.get('data.file'),
+                sync: true
+            });
         },
 
         showDetail () {

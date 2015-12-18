@@ -15,7 +15,7 @@ export default Ember.Service.extend({
     },
 
     fetch (sync){
-        return this.get('ipc').send('get-devices', undefined, sync).then(function(response){
+        return this.get('ipc').send('get-devices', {sync: sync}).then(function(response){
             response.data = response.data || [];
             this.get('devices').pushObjects(response.data);
             return this.get('devices');

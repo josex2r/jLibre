@@ -23,10 +23,12 @@ export default Ember.Object.extend(SerializableModel, {
         this.set('deferred', new Ember.RSVP.defer());
 
         // Create request timeout
-        var timeout = setTimeout(function(){
-            // Reject promise
-            this.get('deferred').reject('timeout');
-        }.bind(this), this.get('timeout'));
+        if(this.get('timeout')){
+            var timeout = setTimeout(function(){
+                // Reject promise
+                this.get('deferred').reject('timeout');
+            }.bind(this), this.get('timeout'));
+        }
 
         // Bind promise
         this.get('deferred.promise').then(function(response){

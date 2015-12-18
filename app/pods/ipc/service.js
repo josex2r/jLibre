@@ -30,15 +30,12 @@ export default Ember.Service.extend({
         }.bind(this));
     },
 
-    send (name, data, sync) {
+    send (name, options) {
         // Set request data
-        var request = IpcModel.create({
-            name: name,
-            type: 'request',
-            data: data,
-            sync: sync === true,
-            uuid: this.get('security').getToken()
-        });
+        options.name = name;
+        options.type = 'request';
+        options.uuid = this.get('security').getToken();
+        var request = IpcModel.create(options);
         Ember.Logger.log('IPC | Sending request: ', request);
 
         // Remove request when ready
