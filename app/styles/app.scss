@@ -1,6 +1,7 @@
  @import 'ember-paper';
 
 $dark-color: #1f1f1f !default;
+$medium-color: #eee !default;
 $light-color: #ffffff !default;
 $opacity-hover: 0.7;
 
@@ -15,10 +16,9 @@ body > div, body > div .container-fluid, .container-fluid > .row, .container-flu
 .container-fluid {
     margin-right: 0;
     padding-right: 0;
-}
-
-.container-fluid > .row {
-    width: 99.9%;
+    .row {
+        width: 99.9%;
+    }
 }
 
 menu {
@@ -28,9 +28,31 @@ menu {
     margin-top: 0;
     padding: 20px;
     background-color: $dark-color;
-    border-right: 1px solid #eee;
-    color: white;
+    border-right: 1px solid $medium-color;
     text-align: left;
+    li {
+        &:hover {
+            background-color: transparent;
+        }
+        a {
+            color: $medium-color;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all .4s ease;
+            padding-left: 5px !important;
+            &:hover, &:focus {
+                background-color: transparent !important;
+                color: $light-color;
+            }
+            &:hover, &.active {
+                font-size: 20px;
+                text-indent: 5px;
+            }
+            span {
+                margin-right: 5px;
+            }
+        }
+    }
 }
 
 .fixed {
@@ -40,29 +62,27 @@ menu {
 nav {
     width: 100%;
     margin-left: 5px;
-}
-
-nav > div > span.glyphicon {
-    cursor: pointer;
-    font-size: 25px;
-    margin-top: 13px;
-    color: $dark-color;
-}
-nav > div > span.glyphicon:hover {
-    opacity: $opacity-hover;
-}
-nav > div > span.glyphicon:last-child{
-    margin-right: 5px;
+    div > span.glyphicon {
+        cursor: pointer;
+        font-size: 25px;
+        margin-top: 13px;
+        color: $dark-color;
+        &:hover {
+            opacity: $opacity-hover;
+        }
+        &:last-child{
+            margin-right: 5px;
+        }
+    }
 }
 
 section {
     height: calc(100% - 50px);
     margin-top: 50px;
-}
-
-section > div.content {
-    padding-top: 10px;
-    padding-right: 0px;
+    div.content {
+        padding-top: 10px;
+        padding-right: 0px;
+    }
 }
 
 .veil {
@@ -100,14 +120,13 @@ section > div.content {
     height: 15em;
     margin: auto;
     position: relative;
-}
-
-.icon-container-big .glyphicon {
-    color: white;
-    font-size: 8em;
-    position: absolute;
-    top: calc(50% - 50px);
-    left: calc(50% - 55px);
+    .glyphicon {
+        color: white;
+        font-size: 8em;
+        position: absolute;
+        top: calc(50% - 50px);
+        left: calc(50% - 55px);
+    }
 }
 
 .no-workspace {
