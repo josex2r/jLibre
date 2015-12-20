@@ -15,20 +15,20 @@ export default Ember.Service.extend({
         this.get('content').clear();
     }),
 
-    find (sync){
+    find (){
         if(!this.get('content').length){
-            return this.fetch(sync);
+            return this.fetch();
         }else{
             return new Ember.RSVP.Promise(resolve => resolve(this.get('content')));
         }
     },
 
-    fetch (sync){
+    fetch (){
         var workspace = this.get('settings.workspace');
 
         return this.get('ipc').send('read-dir', {
             data: workspace,
-            sync: sync,
+            sync: true,
             timeout: null
         }).then(function(response){
             response.data = response.data || [];
@@ -42,7 +42,9 @@ export default Ember.Service.extend({
                     creator: meta.creator
                 };
             });
-            this.get('workspaces').add(workspace, {books: filteredMeta});
+            if(filteredMeta){
+                this.get('workspaces').add(workspace, {books: filteredMeta});
+            }
 
             return this.get('content');
         }.bind(this));

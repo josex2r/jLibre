@@ -31,7 +31,6 @@ export default {
         if(dir[dir.length - 1] !== '/'){
             dir = `${dir}/`;
         }
-        console.log(dir)
         return dir;
     },
 
@@ -52,5 +51,28 @@ export default {
             return false;
         }
     },
+
+    getFiles (dir) {
+        return fs.readdirSync(`${this.workspacePath}${dir}`) || [];
+    },
+
+    _getFilesRecursively (dir, depth) {
+        let results = [];
+        let list = this.getFiles(dir);
+        if(depth){
+            list.forEach(function(file) {
+                const fileName = `${dir}${file}`;
+                const fileDir = `${fileName}/`;
+                if(this.isDirectory(`${this.workspacePath}${fileDir}`)){
+                    results = results.concat(
+                        this._getFilesRecursively(fileDir, depth - 1)
+                    );
+                }else{
+                    results.push(fileName);
+                }
+            }.bind(this));
+        }
+        return results;
+    }
 
 }

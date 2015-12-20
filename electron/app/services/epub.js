@@ -19,31 +19,8 @@ export default {
         this.workspacePath = workspacePath;
     },
 
-    getFiles (dir) {
-        return fs.readdirSync(`${this.workspacePath}${dir}`) || [];
-    },
-
-    _getFilesRecursively (dir, depth) {
-        let results = [];
-        let list = this.getFiles(dir);
-        if(depth){
-            list.forEach(function(file) {
-                const fileName = `${dir}${file}`;
-                const fileDir = `${fileName}/`;
-                if(workspaceSrv.isDirectory(`${this.workspacePath}${fileDir}`)){
-                    results = results.concat(
-                        this._getFilesRecursively(fileDir, depth - 1)
-                    );
-                }else{
-                    results.push(fileName);
-                }
-            }.bind(this));
-        }
-        return results;
-    },
-
-    getEpubs (depth = 5) {
-        return this._getFilesRecursively('', depth).filter(function(name){
+    getEpubs (depth = 3) {
+        return workspaceSrv._getFilesRecursively('', depth).filter(function(name){
             name = name.toLowerCase();
             return formats.some(ext => name.match(new RegExp(ext, 'gi')));
         });
@@ -69,7 +46,6 @@ export default {
                 // Check if cover exist
                 const coverPath = coverSrv.getCover(epub.metadata.title, epub.metadata.creator);
                 if(coverPath){
-                    metadataSrv.add(epub.metadata);
                     epub.metadata.cover = coverPath;
                     deferred.resolve(epub.metadata);
                 }else{
@@ -92,7 +68,7 @@ export default {
             epub.on('error', function(err){
                 deferred.reject(err);
             });
-
+            
             epub.parse();
         }
 

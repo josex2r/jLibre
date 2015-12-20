@@ -25,7 +25,7 @@ export default Ember.Route.extend(NavbarItems, WorkspaceLoaded, {
 
     actions: {
         refresh () {
-            return this.get('books').find(true);
+            return this.get('books').find();
         },
 
         showDetail (index) {

@@ -35,12 +35,22 @@ export default class ApplicationIndex {
             // Get metadata of each book
             const metas = files.map(function(epubPath){
                 //Get book metadata
-                return epubSrv.readEpub(workspaceSrv.workspacePath, epubPath);
+                let metadata;
+                try{
+                    metadata = epubSrv.readEpub(workspaceSrv.workspacePath, epubPath);
+                } catch (e) {
+                    metadata = {state: 'rejected'};
+                }
+                return metadata;
             });
 
             return Q.allSettled(metas).then(function(data){
                 data = data.filter(item => item.state !== 'rejected');
-                data = data.map(item => item.value);
+                data = data.map((item) => {
+                    const metadata = item.value;
+                    metadataSrv.add(metadata);
+                    return metadata;
+                });
                 metadataSrv.dump();
                 return data;
             });
